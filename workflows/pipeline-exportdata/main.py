@@ -56,7 +56,6 @@ class exportDataDB():
             return None
 
     def executeQuery(self,queryExport:str):
-        
 
         try:
         

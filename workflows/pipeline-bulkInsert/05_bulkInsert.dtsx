@@ -1,0 +1,195 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/1/2025 9:06:11 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-3NKBL0F5"
+  DTS:CreatorName="LAPTOP-3NKBL0F5\Carlos"
+  DTS:DTSID="{77739682-4747-4A52-AB35-AA2CA75072AC}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="10250"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="21"
+  DTS:VersionGUID="{05B06B4D-7A94-4A00-B23A-E9DD54FC49E3}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.RawDataLake]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D03F020B-EBCC-44AE-93A4-D846FFAE81D4}"
+      DTS:ObjectName="localhost.RawDataLake">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=RawDataLake;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{D03F020B-EBCC-44AE-93A4-D846FFAE81D4}localhost.RawDataLake;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BB931FC5-46FA-4E2B-B6E2-A8188077A44F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;BULK INSERT &quot; +  @[User::dboTarget] + &#xA;&quot; FROM &quot; + @[User::filePath] + @[User::inputData] +&#xA;&#x9;&quot; WITH (  FORMAT =  'CSV' , FIRSTROW = 2 , FIELDTERMINATOR = ',')&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BulkInsertDataCSV">
+      <DTS:VariableValue
+        DTS:DataType="8">BULK INSERT Cliente FROM 'C:\Users\Carlos\Desktop\dataexport_ssis\Clientes.csv' WITH (  FORMAT =  'CSV' , FIRSTROW = 2 , FIELDTERMINATOR = ',')</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6946ED3E-89ED-4F03-A1DA-9E0D814D1C68}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::createDboTask]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="createDboTask">
+      <DTS:VariableValue
+        DTS:DataType="8">IF EXISTS (SELECT name FROM sys.tables WHERE name = 'Cliente')   		DROP TABLE  Cliente ; 			CREATE TABLE Cliente( 	 				ClienteId INT PRIMARY KEY, 				nombre	  NVARCHAR(50), 				Apellido  NVARCHAR(50), 				Genero	  NVARCHAR(50), 				Email	  NVARCHAR(50)  				);</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8069C290-F1C5-4EDA-8F91-A07AEFA1CD65}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::dboTarget]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="dboTarget">
+      <DTS:VariableValue
+        DTS:DataType="8">Cliente</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{04151871-690E-46B0-A45B-DCD4C4356CA4}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::filePath]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="filePath">
+      <DTS:VariableValue
+        DTS:DataType="8">'C:\Users\Carlos\Desktop\dataexport_ssis\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{778D93C9-C9DF-4FB1-AF0D-99FC344140E9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::inputData]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="inputData">
+      <DTS:VariableValue
+        DTS:DataType="8">Clientes.csv'</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\dropTableTask"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{93561EB8-95F9-4590-8211-6CCDF963E377}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="dropTableTask"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D03F020B-EBCC-44AE-93A4-D846FFAE81D4}"
+          SQLTask:BypassPrepare="False"
+          SQLTask:SqlStmtSourceType="Variable"
+          SQLTask:SqlStatementSource="User::createDboTask" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\IngestDataTask"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{5D166A6B-D7AB-410F-9F30-B5EA3A0E3A12}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="IngestDataTask"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D03F020B-EBCC-44AE-93A4-D846FFAE81D4}"
+          SQLTask:SqlStmtSourceType="Variable"
+          SQLTask:SqlStatementSource="User::BulkInsertDataCSV" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción]"
+      DTS:CreationName=""
+      DTS:DTSID="{CDD200D6-B49C-4CE4-8835-31F7EB26CD38}"
+      DTS:From="Package\dropTableTask"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción"
+      DTS:To="Package\IngestDataTask" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
+<!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
+<!--El paquete podrá cargarse normalmente, pero se perderá la información de diseño anterior y el diseñador reorganizará los elementos automáticamente en la superficie de diseño.-->
+<Objects
+  Version="8">
+  <!--Cada uno de los nodos siguientes contiene propiedades que no afectan al comportamiento en tiempo de ejecución.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="148,42"
+          Id="Package\dropTableTask"
+          TopLeft="96,105" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\IngestDataTask"
+          TopLeft="285,201" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción]"
+          TopLeft="170,147">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="191.5,54"
+              Start="0,0"
+              End="191.5,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23"
+                    Point2="0,27"
+                    Point3="4,27" />
+                  <mssgle:LineSegment
+                    End="187.5,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="187.5,27"
+                    Point2="191.5,27"
+                    Point3="191.5,31" />
+                  <mssgle:LineSegment
+                    End="191.5,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
